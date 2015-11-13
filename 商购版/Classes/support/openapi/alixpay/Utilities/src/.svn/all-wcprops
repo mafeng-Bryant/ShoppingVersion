@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/HH_Iphone/!svn/ver/3641/shoppingTempleate/develop/Classes/support/openapi/alixpay/Utilities/src
+END
+base64.m
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/HH_Iphone/!svn/ver/2664/shoppingTempleate/develop/Classes/support/openapi/alixpay/Utilities/src/base64.m
+END
+RSADataVerifier.h
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/HH_Iphone/!svn/ver/2664/shoppingTempleate/develop/Classes/support/openapi/alixpay/Utilities/src/RSADataVerifier.h
+END
+MD5DataSigner.m
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/HH_Iphone/!svn/ver/3641/shoppingTempleate/develop/Classes/support/openapi/alixpay/Utilities/src/MD5DataSigner.m
+END
+NSDataEx.m
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/HH_Iphone/!svn/ver/2664/shoppingTempleate/develop/Classes/support/openapi/alixpay/Utilities/src/NSDataEx.m
+END
+RSADataSigner.m
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/HH_Iphone/!svn/ver/2664/shoppingTempleate/develop/Classes/support/openapi/alixpay/Utilities/src/RSADataSigner.m
+END
+RSADataVerifier.m
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/HH_Iphone/!svn/ver/2664/shoppingTempleate/develop/Classes/support/openapi/alixpay/Utilities/src/RSADataVerifier.m
+END
+openssl_wrapper.h
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/HH_Iphone/!svn/ver/2664/shoppingTempleate/develop/Classes/support/openapi/alixpay/Utilities/src/openssl_wrapper.h
+END
+base64.h
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/HH_Iphone/!svn/ver/2664/shoppingTempleate/develop/Classes/support/openapi/alixpay/Utilities/src/base64.h
+END
+config.h
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/HH_Iphone/!svn/ver/2664/shoppingTempleate/develop/Classes/support/openapi/alixpay/Utilities/src/config.h
+END
+MD5DataSigner.h
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/HH_Iphone/!svn/ver/2664/shoppingTempleate/develop/Classes/support/openapi/alixpay/Utilities/src/MD5DataSigner.h
+END
+NSDataEx.h
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/HH_Iphone/!svn/ver/2664/shoppingTempleate/develop/Classes/support/openapi/alixpay/Utilities/src/NSDataEx.h
+END
+RSADataSigner.h
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/HH_Iphone/!svn/ver/2664/shoppingTempleate/develop/Classes/support/openapi/alixpay/Utilities/src/RSADataSigner.h
+END
+openssl_wrapper.m
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/HH_Iphone/!svn/ver/2664/shoppingTempleate/develop/Classes/support/openapi/alixpay/Utilities/src/openssl_wrapper.m
+END

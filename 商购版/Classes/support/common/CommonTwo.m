@@ -1,0 +1,235 @@
+//
+//  CommonTwo.m
+//  shopping
+//
+//  Created by LuoHui on 13-2-28.
+//
+//
+
+#import "CommonTwo.h"
+#import "Encry.h"
+
+#include <sys/socket.h> // Per msqr
+#include <sys/sysctl.h>
+#include <net/if.h>
+#include <net/if_dl.h>
+
+@implementation CommonTwo
++(BOOL)connectedToNetwork{
+    // Create zero addy
+    struct sockaddr_in zeroAddress;
+    bzero(&zeroAddress, sizeof(zeroAddress));
+    zeroAddress.sin_len = sizeof(zeroAddress);
+    zeroAddress.sin_family = AF_INET;
+    
+    // Recover reachability flags
+    SCNetworkReachabilityRef defaultRouteReachability = SCNetworkReachabilityCreateWithAddress(NULL, (struct sockaddr *)&zeroAddress);
+    SCNetworkReachabilityFlags flags;
+    
+    BOOL didRetrieveFlags = SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags);
+    CFRelease(defaultRouteReachability);
+    
+    if (!didRetrieveFlags)
+    {
+        NSLog(@"Error. Could not recover network reachability flags");
+        return NO;
+    }
+    
+    BOOL isReachable = flags & kSCNetworkFlagsReachable;
+    BOOL needsConnection = flags & kSCNetworkFlagsConnectionRequired;
+	
+    return (isReachable && !needsConnection) ? YES : NO;
+}
+
++(NSString*)TransformJson:(NSMutableDictionary*)sourceDic withLinkStr:(NSString*)strurl{
+	SBJsonWriter *writer = [[SBJsonWriter alloc]init];
+	NSString *jsonConvertedObj = [writer stringWithObject:sourceDic];
+	//NSLog(@"jsonConvertedObj:%@",jsonConvertedObj);
+    [writer release];
+	NSString *b64 = [CommonTwo encodeBase64:(NSMutableData *)[jsonConvertedObj dataUsingEncoding: NSUTF8StringEncoding]];
+	NSString *urlEncode = [CommonTwo URLEncodedString:b64];
+	NSString *reqStr = [NSString stringWithFormat:strurl,urlEncode];
+	//NSLog(@"req_string:%@",reqStr);
+	return reqStr;
+}
+//+(NSString*)encodeBase64:(NSMutableData*)data{
+//	size_t outputDataSize = EstimateBas64EncodedDataSize([data length]);
+//	Byte outputData[outputDataSize];
+//	Base64EncodeData([data bytes], [data length], outputData,&outputDataSize, YES);
+//	NSData *theData = [[NSData alloc]initWithBytes:outputData length:outputDataSize];//create a NSData object from the decoded data
+//	NSString *stringValue1 = [[NSString alloc]initWithData:theData encoding:NSUTF8StringEncoding];
+//	//NSLog(@"reqdata string base64 %@",stringValue1);
+//	[theData release];
+//	return [stringValue1 autorelease];
+//}
++ (NSString*)URLEncodedString:(NSString*)input
+{
+    NSString *result = (NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+                                                                           (CFStringRef)input,
+                                                                           NULL,
+                                                                           CFSTR("!*'();:@&=+$,/?%#[]"),
+                                                                           kCFStringEncodingUTF8);
+    [result autorelease];
+    return result;
+}
++ (NSString*)URLDecodedString:(NSString*)input
+{
+    NSString *result = (NSString *)CFURLCreateStringByReplacingPercentEscapesUsingEncoding(kCFAllocatorDefault,
+                                                                                           (CFStringRef)input,
+                                                                                           CFSTR(""),
+                                                                                           kCFStringEncodingUTF8);
+    [result autorelease];
+    return result;
+}
+
++(NSNumber*)getVersion:(int)commandId{
+	NSArray *ar_version = [DBOperate queryData:T_VERSION theColumn:@"command_id"
+								theColumnValue:[NSString stringWithFormat:@"%d",commandId] withAll:NO];
+	
+	if ([ar_version count]>0) {
+		NSArray *arr_version = [ar_version objectAtIndex:0];
+		return [arr_version objectAtIndex:version_ver];
+	}
+	else {
+		return [NSNumber numberWithInt:0];
+	}
+}
+
++ (NSNumber*)getMemberVersion:(int)memberId commandID:(int)_commandId
+{
+	NSArray *ar_version = [DBOperate queryData:T_MEMBER_VERSION theColumn:@"memberId" equalValue:[NSNumber numberWithInt:memberId] theColumn:@"id" equalValue:[NSNumber numberWithInt:_commandId]];
+	if ([ar_version count]>0) {
+		NSArray *arr_version = [ar_version objectAtIndex:0];
+		return [arr_version objectAtIndex:member_version_ver];
+        NSLog(@"%d",[[arr_version objectAtIndex:member_version_ver] intValue]);
+	}
+	else {
+		return [NSNumber numberWithInt:0];
+	}
+}
+
++(NSString*)getSecureString{
+	NSString *keystring = [NSString stringWithFormat:@"%d%@",SITE_ID,SignSecureKey];
+	NSString *securekey = [Encry md5:keystring];
+	return securekey;
+}
+
++(NSString*)getLotteryLogs:(NSString *)dateString{
+    
+	NSArray *lotteryLogsArray = [DBOperate queryData:T_LOTTERY_LOGS theColumn:@"date"
+                                      theColumnValue:dateString withAll:NO];
+	
+	if ([lotteryLogsArray count]>0)
+    {
+		NSArray *array = [lotteryLogsArray objectAtIndex:0];
+		return [array objectAtIndex:lottery_logs_count];
+	}
+	else
+    {
+		return [NSString stringWithFormat:@"%d",ONE_DATE_LOTTERY_TIMES];
+	}
+}
+
+#define	CTL_NET		4		/* network, see socket.h */
++ (NSString*)getMacAddress{
+	int                    mib[6];
+    size_t                len;
+    char                *buf;
+    unsigned char        *ptr;
+    struct if_msghdr    *ifm;
+    struct sockaddr_dl    *sdl;
+    
+    mib[0] = CTL_NET;
+    mib[1] = AF_ROUTE;
+    mib[2] = 0;
+    mib[3] = AF_LINK;
+    mib[4] = NET_RT_IFLIST;
+    
+    if ((mib[5] = if_nametoindex("en0")) == 0) {
+        printf("Error: if_nametoindex error/n");
+        return NULL;
+    }
+    
+    if (sysctl(mib, 6, NULL, &len, NULL, 0) < 0) {
+        printf("Error: sysctl, take 1/n");
+        return NULL;
+    }
+    
+    if ((buf = malloc(len)) == NULL) {
+        printf("Could not allocate memory. error!/n");
+        return NULL;
+    }
+    
+    if (sysctl(mib, 6, buf, &len, NULL, 0) < 0) {
+        printf("Error: sysctl, take 2");
+        return NULL;
+    }
+    
+    ifm = (struct if_msghdr *)buf;
+    sdl = (struct sockaddr_dl *)(ifm + 1);
+    ptr = (unsigned char *)LLADDR(sdl);
+	NSString *outstring = [NSString stringWithFormat:@"%02x:%02x:%02x:%02x:%02x:%02x", *ptr, *(ptr+1), *(ptr+2), *(ptr+3), *(ptr+4), *(ptr+5)];
+    //NSString *outstring = [NSString stringWithFormat:@"%02x%02x%02x%02x%02x%02x", *ptr, *(ptr+1), *(ptr+2), *(ptr+3), *(ptr+4), *(ptr+5)];
+    free(buf);
+    return [outstring uppercaseString];
+}
+
+
+//判断是否为新会员 前7天到现在注册的会员
++(BOOL)isNewMember:(int)time
+{
+    long long int created = (long long int)time;
+    NSDate* cDate = [NSDate date];   //当前日期
+    NSDateFormatter *outputFormat = [[NSDateFormatter alloc] init];
+    //[outputFormat setTimeZone:[NSTimeZone timeZoneWithName:@"H"]];
+    [outputFormat setDateFormat:@"YYYY-MM-dd YYYY-MM-dd HH:mm:ss"];
+    NSString *dateString = [outputFormat stringFromDate:cDate];
+    NSDate *currentDate = [outputFormat dateFromString:dateString];     //当天凌晨 00:00:00 时间格式
+    [outputFormat release];
+    
+    NSTimeInterval cTime = [currentDate timeIntervalSince1970];   //转化为时间戳
+    long long int currentTime = (long long int)cTime;       //转成long long
+    created = created + (7 * 24 * 60 * 60) - 1;
+    
+    if (currentTime > created)
+    {
+        return NO;
+    }else
+    {
+        return YES;
+    }
+}
+
++(double)lantitudeLongitudeToDist:(double)lon1 Latitude1:(double)lat1 long2:(double)lon2 Latitude2:(double)lat2
+{
+	double er = 6378137; // 6378700.0f;
+	//ave. radius = 6371.315 (someone said more accurate is 6366.707)
+	//equatorial radius = 6378.388
+	//nautical mile = 1.15078
+	double radlat1 = PI*lat1/180.0f;
+	double radlat2 = PI*lat2/180.0f;
+	//now long.
+	double radlong1 = PI*lon1/180.0f;
+	double radlong2 = PI*lon2/180.0f;
+	if( radlat1 < 0 ) radlat1 = PI/2 + fabs(radlat1);// south
+	if( radlat1 > 0 ) radlat1 = PI/2 - fabs(radlat1);// north
+	if( radlong1 < 0 ) radlong1 = PI*2 - fabs(radlong1);//west
+	if( radlat2 < 0 ) radlat2 = PI/2 + fabs(radlat2);// south
+	if( radlat2 > 0 ) radlat2 = PI/2 - fabs(radlat2);// north
+	if( radlong2 < 0 ) radlong2 = PI*2 - fabs(radlong2);// west
+	//spherical coordinates x=r*cos(ag)sin(at), y=r*sin(ag)*sin(at), z=r*cos(at)
+	//zero ag is up so reverse lat
+	double x1 = er * cos(radlong1) * sin(radlat1);
+	double y1 = er * sin(radlong1) * sin(radlat1);
+	double z1 = er * cos(radlat1);
+	double x2 = er * cos(radlong2) * sin(radlat2);
+	double y2 = er * sin(radlong2) * sin(radlat2);
+	double z2 = er * cos(radlat2);
+	double d = sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2)+(z1-z2)*(z1-z2));
+	//side, side, side, law of cosines and arccos
+	double theta = acos((er*er+er*er-d*d)/(2*er*er));
+	double dist  = theta*er;
+	return dist;
+}
+
+@end

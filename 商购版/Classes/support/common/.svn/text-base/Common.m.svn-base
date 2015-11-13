@@ -1,0 +1,166 @@
+//
+//  Common.m
+//  Profession
+//
+//  Created by MC374 on 12-8-7.
+//  Copyright 2012 __MyCompanyName__. All rights reserved.
+//
+
+#import "Common.h"
+#import "Encry.h"
+
+#include <sys/socket.h> // Per msqr
+#include <sys/sysctl.h>  
+#include <net/if.h>
+#include <net/if_dl.h>
+#import "SvUDIDTools.h"
+
+@implementation Common
+
++(BOOL)connectedToNetwork{
+    // Create zero addy
+    struct sockaddr_in zeroAddress;
+    bzero(&zeroAddress, sizeof(zeroAddress));
+    zeroAddress.sin_len = sizeof(zeroAddress);
+    zeroAddress.sin_family = AF_INET;
+    
+    // Recover reachability flags
+    SCNetworkReachabilityRef defaultRouteReachability = SCNetworkReachabilityCreateWithAddress(NULL, (struct sockaddr *)&zeroAddress);
+    SCNetworkReachabilityFlags flags;
+    
+    BOOL didRetrieveFlags = SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags);
+    CFRelease(defaultRouteReachability);
+    
+    if (!didRetrieveFlags)
+    {
+        NSLog(@"Error. Could not recover network reachability flags");
+        return NO;
+    }
+    
+    BOOL isReachable = flags & kSCNetworkFlagsReachable;
+    BOOL needsConnection = flags & kSCNetworkFlagsConnectionRequired;
+	
+    return (isReachable && !needsConnection) ? YES : NO;
+}
+
++(NSString*)TransformJson:(NSMutableDictionary*)sourceDic withLinkStr:(NSString*)strurl{
+	SBJsonWriter *writer = [[SBJsonWriter alloc]init];
+	NSString *jsonConvertedObj = [writer stringWithObject:sourceDic];
+	//NSLog(@"jsonConvertedObj:%@",jsonConvertedObj);
+    [writer release];
+	NSString *b64 = [Common encodeBase64:(NSMutableData *)[jsonConvertedObj dataUsingEncoding: NSUTF8StringEncoding]];
+	NSString *urlEncode = [Common URLEncodedString:b64];
+	NSString *reqStr = [NSString stringWithFormat:strurl,urlEncode];
+	//NSLog(@"req_string:%@",reqStr);
+	return reqStr;
+}
++(NSString*)encodeBase64:(NSMutableData*)data{
+	size_t outputDataSize = EstimateBas64EncodedDataSize([data length]);
+	Byte outputData[outputDataSize];
+	Base64EncodeData([data bytes], [data length], outputData,&outputDataSize, YES);
+	NSData *theData = [[NSData alloc]initWithBytes:outputData length:outputDataSize];//create a NSData object from the decoded data
+	NSString *stringValue1 = [[NSString alloc]initWithData:theData encoding:NSUTF8StringEncoding];
+	//NSLog(@"reqdata string base64 %@",stringValue1);
+	[theData release];
+	return [stringValue1 autorelease];
+}
++ (NSString*)URLEncodedString:(NSString*)input  
+{  
+    NSString *result = (NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,  
+                                                                           (CFStringRef)input,  
+                                                                           NULL,  
+                                                                           CFSTR("!*'();:@&=+$,/?%#[]"),  
+                                                                           kCFStringEncodingUTF8);  
+    [result autorelease];  
+    return result;  
+}  
++ (NSString*)URLDecodedString:(NSString*)input  
+{  
+    NSString *result = (NSString *)CFURLCreateStringByReplacingPercentEscapesUsingEncoding(kCFAllocatorDefault,  
+                                                                                           (CFStringRef)input,  
+                                                                                           CFSTR(""),  
+                                                                                           kCFStringEncodingUTF8);  
+    [result autorelease];  
+    return result;    
+}  
+
++(NSNumber*)getVersion:(int)commandId{
+	NSArray *ar_version = [DBOperate queryData:T_VERSION theColumn:@"command_id" 
+								theColumnValue:[NSString stringWithFormat:@"%d",commandId] withAll:NO];
+	
+	if ([ar_version count]>0) {
+		NSArray *arr_version = [ar_version objectAtIndex:0];
+		return [arr_version objectAtIndex:version_ver];
+	}
+	else {
+		return [NSNumber numberWithInt:0];
+	}
+}
+
++ (NSNumber*)getMemberVersion:(int)memberId commandID:(int)_commandId
+{
+	NSArray *ar_version = [DBOperate queryData:T_MEMBER_VERSION theColumn:@"memberId" equalValue:[NSNumber numberWithInt:memberId] theColumn:@"id" equalValue:[NSNumber numberWithInt:_commandId]];
+	if ([ar_version count]>0) {
+		NSArray *arr_version = [ar_version objectAtIndex:0];
+		return [arr_version objectAtIndex:member_version_ver];
+        NSLog(@"%d",[[arr_version objectAtIndex:member_version_ver] intValue]);
+	}
+	else {
+		return [NSNumber numberWithInt:0];
+	}
+}
+
++(NSString*)getSecureString{
+	NSString *keystring = [NSString stringWithFormat:@"%d%@",SITE_ID,SignSecureKey];
+	NSString *securekey = [Encry md5:keystring];
+	return securekey;
+}
+
++(NSString*)getLotteryLogs:(NSString *)dateString{
+    
+	NSArray *lotteryLogsArray = [DBOperate queryData:T_LOTTERY_LOGS theColumn:@"date" 
+								theColumnValue:dateString withAll:NO];
+	
+	if ([lotteryLogsArray count]>0) 
+    {
+		NSArray *array = [lotteryLogsArray objectAtIndex:0];
+		return [array objectAtIndex:lottery_logs_count];
+	}
+	else
+    {
+		return [NSString stringWithFormat:@"%d",ONE_DATE_LOTTERY_TIMES];
+	}
+}
+
+#define	CTL_NET		4		/* network, see socket.h */
++ (NSString*)getMacAddress{
+	return [SvUDIDTools UDID];
+}
+
+
+//判断是否为新会员 前7天到现在注册的会员
++(BOOL)isNewMember:(int)time
+{
+    long long int created = (long long int)time;
+    NSDate* cDate = [NSDate date];   //当前日期
+    NSDateFormatter *outputFormat = [[NSDateFormatter alloc] init];
+    //[outputFormat setTimeZone:[NSTimeZone timeZoneWithName:@"H"]]; 
+    [outputFormat setDateFormat:@"YYYY-MM-dd YYYY-MM-dd HH:mm:ss"];
+    NSString *dateString = [outputFormat stringFromDate:cDate];
+    NSDate *currentDate = [outputFormat dateFromString:dateString];     //当天凌晨 00:00:00 时间格式
+    [outputFormat release];
+    
+    NSTimeInterval cTime = [currentDate timeIntervalSince1970];   //转化为时间戳
+    long long int currentTime = (long long int)cTime;       //转成long long
+    created = created + (7 * 24 * 60 * 60) - 1;
+    
+    if (currentTime > created)
+    {
+        return NO;
+    }else
+    {
+        return YES;
+    }
+}
+
+@end

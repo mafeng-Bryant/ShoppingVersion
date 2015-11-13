@@ -1,0 +1,613 @@
+//
+//  AddOrEditReservationViewController.m
+//  shopping
+//
+//  Created by 来 云 on 13-1-15.
+//  Copyright (c) 2013年 __MyCompanyName__. All rights reserved.
+//
+
+#import "AddOrEditReservationViewController.h"
+#import "AddReceivingAddressViewController.h"
+#import "PayAndSendViewController.h"
+#import "WritingInvoiceViewController.h"
+#import "MyAddressViewController.h"
+#import "DataManager.h"
+#import "Common.h"
+
+@interface AddOrEditReservationViewController ()
+
+@end
+
+@implementation AddOrEditReservationViewController
+@synthesize info = _info;
+@synthesize dict = _dict;
+@synthesize easyId;
+@synthesize easyNameField = _easyNameField;
+@synthesize delegate;
+
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:style];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+static int lines[] = {2,5,3};
+static NSString *titles[][5] = {{},{@"支付方式",@"配送方式",@"送货时间",@"送货前电话",@"付款方式"},{@"发票类型",@"发票抬头",@"发票内容"}};
+static NSString *sectionTitles[] = {@"  收货人信息",@"  支付及配送",@"  发票信息"};
+static NSString *noInfoTitles[] = {@"填写收货人信息",@"选择支付及配送方式",@"填写发票信息"};
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.title = @"轻松购设置";
+    
+    self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.scrollEnabled = NO;
+    if (IOS_VERSION >= 7.0) {
+        self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 10.0f)];
+    }
+    
+    UIBarButtonItem *mrightbto = [[UIBarButtonItem alloc]
+                                  initWithTitle:@"提交"
+                                  style:UIBarButtonItemStyleBordered
+                                  target:self
+                                  action:@selector(submitAction)];
+    self.navigationItem.rightBarButtonItem = mrightbto;
+    [mrightbto release];
+    
+    _dict = [[NSMutableDictionary alloc] init];
+    
+    if (_info == nil && _info.per_name.length==0) {
+        _info = [[ReservationInfo alloc] init];
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self refush];
+}
+
+- (void)refush
+{
+    UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 70)];
+    headView.backgroundColor = [UIColor whiteColor];
+    
+    UIImage *img = [UIImage imageNamed:@"button_白色.png"];
+    img = [img stretchableImageWithLeftCapWidth:img.size.width/2 topCapHeight:img.size.height/2];
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:img];
+    imageView.frame = CGRectMake(10, 10, 300, 40);
+    [headView addSubview:imageView];
+    [imageView release];
+    
+    _easyNameField = [[UITextField alloc] initWithFrame:CGRectMake(20, 15, 280, 30)];
+    _easyNameField.text = _info.easyName;
+    _easyNameField.delegate = self;
+    _easyNameField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    _easyNameField.borderStyle = UITextBorderStyleNone;
+    _easyNameField.returnKeyType = UIReturnKeyDone;
+    _easyNameField.backgroundColor = [UIColor clearColor];
+    _easyNameField.placeholder = @"请设置轻松购名称（例：仟吉购）";
+    [_easyNameField setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
+    _easyNameField.font = [UIFont systemFontOfSize:18];
+    [headView addSubview:_easyNameField];
+    
+    self.tableView.tableHeaderView = headView;
+    [headView release];
+    
+    NSArray *arr1 = [NSArray arrayWithObjects:_info.buy_buyStyle,_info.buy_sendStyle,_info.buy_time,_info.buy_isSureByTel,_info.buy_moneyStyle, nil];
+    NSArray *arr2 = [[NSArray alloc] init];
+    if ([_info.invoice_titleName isEqualToString:@""]) {
+        arr2 = [NSArray arrayWithObjects:_info.invoice_style,_info.invoice_title,@"------------", nil];
+    }else {
+        arr2 = [NSArray arrayWithObjects:_info.invoice_style,_info.invoice_title,_info.invoice_titleName, nil];
+    }
+    [_dict removeAllObjects];
+    [_dict setObject:arr1 forKey:[NSNumber numberWithInt:1]];
+    [_dict setObject:arr2 forKey:[NSNumber numberWithInt:2]];
+    
+    [self.tableView reloadData];
+}
+
+- (void)dealloc
+{
+    [_info release];
+    [_dict release];
+    [progressHUD release];
+    [_easyNameField release];
+    [super dealloc];
+}
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    
+    return 3;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (section == 1 && [_info.buy_buyStyle isEqualToString:@"在线支付"]&&[self checkForm:section]) {
+        return 4;
+    }else{
+        return [self checkForm:section]?lines[section]:1;
+    }
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    
+    //ios7新特性,解决分割线短一点
+    if ([tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+        [tableView setSeparatorInset:UIEdgeInsetsZero];
+    }
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        if ([self checkForm:indexPath.section]&&indexPath.section==0) {
+            cell = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:nil];
+        }else{
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:nil];
+            
+        }
+        cell.textLabel.font = [UIFont systemFontOfSize:15];
+        cell.selectionStyle = 0;
+    }
+    if ([self checkForm:indexPath.section]) {
+    
+        if (indexPath.section==0) {
+            if (indexPath.row == 0) {
+                UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 250, 22)];
+                label1.textColor = [UIColor darkGrayColor];
+                label1.font = [UIFont systemFontOfSize:14.0f];
+                label1.textAlignment = UITextAlignmentLeft;
+                label1.backgroundColor = [UIColor clearColor];
+                [cell.contentView addSubview:label1];
+                label1.text = [NSString stringWithFormat:@"%@   %@",_info.per_name,_info.per_tel];
+                [label1 release];
+            }else {
+                UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 250, 22)];
+                label2.textColor = [UIColor darkGrayColor];
+                label2.font = [UIFont systemFontOfSize:14.0f];
+                label2.textAlignment = UITextAlignmentLeft;
+                label2.backgroundColor = [UIColor clearColor];
+                [cell.contentView addSubview:label2];
+                [label2 release];
+                label2.text = [NSString stringWithFormat:@"%@ %@ %@ %@",_info.per_city,_info.per_area,_info.per_detailAddress,_info.per_post];
+            }
+            
+        }else{
+            UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 80, 20)];
+            label1.textColor = [UIColor darkTextColor];
+            label1.font = [UIFont systemFontOfSize:14.0f];
+            label1.textAlignment = UITextAlignmentLeft;
+            label1.backgroundColor = [UIColor clearColor];
+            [cell.contentView addSubview:label1];
+            label1.text = titles[indexPath.section][indexPath.row];
+            [label1 release];
+            
+            UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(90, 0, 200, 20)];
+            label2.textColor = [UIColor darkGrayColor];
+            label2.font = [UIFont systemFontOfSize:14.0f];
+            label2.textAlignment = UITextAlignmentLeft;
+            label2.backgroundColor = [UIColor clearColor];
+            [cell.contentView addSubview:label2];
+            label2.text = [[_dict objectForKey:[NSNumber numberWithInt:indexPath.section]] objectAtIndex:indexPath.row];
+            [label2 release];
+        }
+        
+        if (indexPath.row == 0) {
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"右箭头.png"]];
+            imageView.frame = CGRectMake(290, 22*lines[indexPath.section]/2-8, 16, 11);
+            [cell addSubview:imageView];
+        }
+        
+    }else{
+        UIImage *img = [UIImage imageNamed:@"button_白色.png"];
+        img = [img stretchableImageWithLeftCapWidth:img.size.width/2 topCapHeight:img.size.height/2];
+        
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:img];
+        imageView.frame = CGRectMake(10, 20, 300, 40);
+        [cell.contentView addSubview:imageView];
+        [imageView release];
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 280, 40)];
+        label.textAlignment = 0;
+        label.backgroundColor = [UIColor clearColor];
+        label.text = noInfoTitles[indexPath.section];
+        label.font = [UIFont systemFontOfSize:16];
+        [cell.contentView addSubview:label];
+        [label release];
+        
+        UIImageView *riImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"右箭头.png"]];
+        riImgView.frame = CGRectMake(290, 34, 16, 11);
+        [cell.contentView addSubview:riImgView];
+        [riImgView release];
+    }
+    return cell;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 16)];
+    
+    UIImageView *imgV = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"分割线_虚线.png"]];
+    imgV.frame = CGRectMake(0, 7, 320, 1);
+    [headView addSubview:imgV];
+    [imgV release];
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 88, 16)];
+    label.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"小栏目背景.png"]];
+    label.text = sectionTitles[section];
+    label.textColor = [UIColor whiteColor];
+    label.font = [UIFont systemFontOfSize:12];
+    label.textAlignment = 1;
+    [headView addSubview:label];
+    [label release];
+    
+    return headView;
+}
+
+- (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [self checkForm:indexPath.section]?22:80;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.section) {
+        case 0:
+        {
+            int _userId = [[[[DBOperate queryData:T_MEMBER_INFO theColumn:nil theColumnValue:nil withAll:YES] objectAtIndex:0] objectAtIndex:member_info_memberId] intValue];
+            
+            MyAddressViewController *myAddr = [[MyAddressViewController alloc] init];
+            myAddr.fromType = FromTypeReceive;
+            myAddr._isHidden = NO;
+            myAddr.userId = [NSString stringWithFormat:@"%d",_userId];
+            myAddr.info = _info;
+            [self.navigationController pushViewController:myAddr animated:YES];
+            [myAddr release];
+        }
+            break;
+        case 1:
+        {
+            PayAndSendViewController *paySend = [[PayAndSendViewController alloc] initWithStyle:UITableViewStyleGrouped];
+            paySend.info = _info;
+            paySend.info.buy_moneyStyle = @"现金";
+            [self.navigationController pushViewController:paySend animated:YES];
+            [paySend release];
+        }
+            break;
+        case 2:
+        {
+            WritingInvoiceViewController *writingInvoice = [[WritingInvoiceViewController alloc] initWithStyle:UITableViewStyleGrouped];
+            writingInvoice.info = _info;
+            [self.navigationController pushViewController:writingInvoice animated:YES];
+            [writingInvoice release];
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+}
+
+#pragma mark ----MBProgressHUDDelegate method
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+    [self.navigationController popViewControllerAnimated:NO];
+    if (delegate != nil && [delegate respondsToSelector:@selector(finishEdit)]) {
+        [delegate finishEdit];
+    }
+}
+
+#pragma mark ----UITextFieldDelegate method
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+   _info.easyName = textField.text;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField == self.easyNameField) {
+        [self.easyNameField resignFirstResponder];
+    }
+    return YES;
+}
+
+#pragma mark -----private methods
+- (BOOL)checkForm:(int)sectionIndex
+{
+    switch (sectionIndex) {
+        case 0:
+        {
+            return _info.per_name.length == 0 ? NO : YES;
+        }
+            break;
+        case 1:
+        {
+            return _info.buy_buyStyle.length+_info.buy_sendStyle.length+_info.buy_time.length+_info.buy_isSureByTel.length == 0 ? NO : YES;
+        }
+            break;
+        case 2:
+        {
+            return _info.invoice_style.length+_info.invoice_title.length+_info.invoice_titleName.length == 0 ? NO : YES;
+        }
+            break;
+            
+        default:
+        {
+            return NO;
+        }
+            break;
+    }
+}
+
+- (void)submitAction
+{
+    [_easyNameField resignFirstResponder];
+    
+//    NSLog(@"_info.per_name== %@ ",_info.per_name);
+//    NSLog(@"_info.per_detailAddress=== %@",_info.per_detailAddress);
+//    NSLog(@"_info.per_province==== %@",_info.per_province);
+//    NSLog(@"_info.per_city=== %@",_info.per_city);
+//    NSLog(@"_info.per_area==== %@",_info.per_area);
+//    NSLog(@"_info.per_post=== %@",_info.per_post);
+//    NSLog(@"_info.buy_buyStyle=== %@",_info.buy_buyStyle);
+//    NSLog(@"_info.buy_sendStyle=== %@",_info.buy_sendStyle);
+//    NSLog(@"_info.buy_time=== %@",_info.buy_time);
+//    NSLog(@"_info.buy_isSureByTel=== %@",_info.buy_isSureByTel);
+//    NSLog(@"_info.buy_moneyStyle=== %@",_info.buy_moneyStyle);
+//    NSLog(@"_info.invoice_style=== %@",_info.invoice_style);
+//    NSLog(@"_info.invoice_title=== %@",_info.invoice_title);
+//    NSLog(@"_info.invoice_titleName=== %@",_info.invoice_titleName);
+    
+    if (self.easyNameField.text.length == 0 || _info.per_name.length == 0 || _info.per_tel.length == 0 || _info.per_post.length == 0 || _info.per_province.length == 0 || _info.per_detailAddress.length == 0 || _info.buy_buyStyle.length == 0 || _info.buy_sendStyle .length == 0 || _info.buy_time.length == 0 || _info.buy_isSureByTel.length == 0 || _info.invoice_style.length == 0 || _info.invoice_title.length == 0) {
+        
+        MBProgressHUD *mprogressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+        mprogressHUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"提示icon-信息.png"]] autorelease];
+        mprogressHUD.mode = MBProgressHUDModeCustomView;
+        mprogressHUD.labelText = @"请填写完整的信息";
+        [self.view addSubview:mprogressHUD];
+        [self.view bringSubviewToFront:mprogressHUD];
+        [mprogressHUD show:YES];
+        [mprogressHUD hide:YES afterDelay:1.5];
+        [mprogressHUD release];
+    }else {
+        [self accessService];
+    }
+}
+
+- (void)accessService
+{
+    progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+    progressHUD.labelText = @"提交中... ";
+    [self.view addSubview:progressHUD];
+    [self.view bringSubviewToFront:progressHUD];
+    [progressHUD show:YES];
+    
+    int _userId = [[[[DBOperate queryData:T_MEMBER_INFO theColumn:nil theColumnValue:nil withAll:YES] objectAtIndex:0] objectAtIndex:member_info_memberId] intValue];
+    
+//    NSLog(@"_info.per_name== %@ ",_info.per_name);
+//    NSLog(@"_info.per_detailAddress=== %@",_info.per_detailAddress);
+//    NSLog(@"_info.per_province==== %@",_info.per_province);
+//    NSLog(@"_info.per_city=== %@",_info.per_city);
+//    NSLog(@"_info.per_area==== %@",_info.per_area);
+//    NSLog(@"_info.per_post=== %@",_info.per_post);
+//    NSLog(@"_info.buy_buyStyle=== %@",_info.buy_buyStyle);
+//    NSLog(@"_info.buy_sendStyle=== %@",_info.buy_sendStyle);
+//    NSLog(@"_info.buy_time=== %@",_info.buy_time);
+//    NSLog(@"_info.buy_isSureByTel=== %@",_info.buy_isSureByTel);
+//    NSLog(@"_info.buy_moneyStyle=== %@",_info.buy_moneyStyle);
+//    NSLog(@"_info.invoice_style=== %@",_info.invoice_style);
+//    NSLog(@"_info.invoice_title=== %@",_info.invoice_title);
+//    NSLog(@"_info.invoice_titleName=== %@",_info.invoice_titleName);
+    
+    int _payInt = 0;
+    NSString *money = @"0";
+    if ([self.info.buy_buyStyle isEqualToString:@"在线支付"] ) {
+        _payInt = 0;
+    }else {
+        _payInt = 1;
+        
+        if ([self.info.buy_moneyStyle isEqualToString:@"现金"]) {
+            money = @"0";
+        }else {
+            money = @"1";
+        }
+    }
+    
+    int time = 0;
+    if ([self.info.buy_time isEqualToString:@"只工作日送"]) {
+        time = 1;
+    }else if ([self.info.buy_time isEqualToString:@"工作日，双休，假日均可送货"]) {
+        time = 2;
+    }else {
+        time = 3;
+    }
+    
+    int isSure = 0;
+    if ([self.info.buy_isSureByTel isEqualToString:@"是"]) {
+        isSure = 1;
+    }else {
+        isSure = 0;
+    }
+    
+    NSArray *dbArr = [DBOperate queryData:T_SENDSTYLE theColumn:@"name" theColumnValue:self.info.buy_sendStyle withAll:NO];
+    int _sendId = [[[dbArr objectAtIndex:0] objectAtIndex:sendstyle_id] intValue];
+//    int _sendId = 0;
+    
+    int titleValue = 0;
+    if ([self.info.invoice_title isEqualToString:@"个人"]) {
+        titleValue = 1;
+    }else {
+        titleValue = 2;
+    }
+    
+    NSMutableDictionary *jsontestDic = nil; 
+    if (self.easyId == nil) {
+        if (_payInt == 0) {
+            jsontestDic = [NSDictionary dictionaryWithObjectsAndKeys:
+                           [Common getSecureString],@"keyvalue",
+                           [NSNumber numberWithInt: SITE_ID],@"site_id",
+                           [NSNumber numberWithInt:_userId],@"user_id",
+                           [NSNumber numberWithInt:1],@"edittype",
+                           self.easyNameField.text,@"easyname",
+                           _info.per_name,@"consignee",
+                           _info.per_tel,@"mobile",
+                           _info.per_detailAddress,@"address",
+                           _info.per_province,@"province",
+                           _info.per_city,@"city",
+                           _info.per_area,@"area",
+                           _info.per_post,@"zip_code",
+                           [NSNumber numberWithInt:_payInt],@"payway",
+                           [NSNumber numberWithInt:_sendId],@"post_id",
+                           [NSNumber numberWithInt:time],@"send_time",
+                           [NSNumber numberWithInt:isSure],@"issure",
+                           [NSNumber numberWithInt:1],@"invoice_type",
+                           [NSNumber numberWithInt:titleValue],@"invoice_title_type",
+                           self.info.invoice_titleName,@"invoice_title_cont",
+                           [NSNumber numberWithInt:1],@"is_default",nil];
+        }else {
+            jsontestDic = [NSDictionary dictionaryWithObjectsAndKeys:
+                           [Common getSecureString],@"keyvalue",
+                           [NSNumber numberWithInt: SITE_ID],@"site_id",
+                           [NSNumber numberWithInt:_userId],@"user_id",
+                           [NSNumber numberWithInt:1],@"edittype",
+                           self.easyNameField.text,@"easyname",
+                           _info.per_name,@"consignee",
+                           _info.per_tel,@"mobile",
+                           _info.per_detailAddress,@"address",
+                           _info.per_province,@"province",
+                           _info.per_city,@"city",
+                           _info.per_area,@"area",
+                           _info.per_post,@"zip_code",
+                           [NSNumber numberWithInt:_payInt],@"payway",
+                           money,@"payment",
+                           [NSNumber numberWithInt:_sendId],@"post_id",
+                           [NSNumber numberWithInt:time],@"send_time",
+                           [NSNumber numberWithInt:isSure],@"issure",
+                           [NSNumber numberWithInt:1],@"invoice_type",
+                           [NSNumber numberWithInt:titleValue],@"invoice_title_type",
+                           self.info.invoice_titleName,@"invoice_title_cont",
+                           [NSNumber numberWithInt:1],@"is_default",nil];
+        }
+        
+    }else {
+        if (_payInt == 0) {
+            jsontestDic = [NSDictionary dictionaryWithObjectsAndKeys:
+                           [Common getSecureString],@"keyvalue",
+                           [NSNumber numberWithInt: SITE_ID],@"site_id",
+                           [NSNumber numberWithInt:_userId],@"user_id",
+                           [NSNumber numberWithInt:2],@"edittype",
+                           self.easyNameField.text,@"easyname",
+                           _info.per_name,@"consignee",
+                           _info.per_tel,@"mobile",
+                           _info.per_detailAddress,@"address",
+                           _info.per_province,@"province",
+                           _info.per_city,@"city",
+                           _info.per_area,@"area",
+                           _info.per_post,@"zip_code",
+                           [NSNumber numberWithInt:_payInt],@"payway",
+                           [NSNumber numberWithInt:_sendId],@"post_id",
+                           [NSNumber numberWithInt:time],@"send_time",
+                           [NSNumber numberWithInt:isSure],@"issure",
+                           [NSNumber numberWithInt:1],@"invoice_type",
+                           [NSNumber numberWithInt:titleValue],@"invoice_title_type",
+                           self.info.invoice_titleName,@"invoice_title_cont",
+                           [NSNumber numberWithInt:[self.easyId intValue]],@"easy_id",nil];
+        }else {
+            jsontestDic = [NSDictionary dictionaryWithObjectsAndKeys:
+                           [Common getSecureString],@"keyvalue",
+                           [NSNumber numberWithInt: SITE_ID],@"site_id",
+                           [NSNumber numberWithInt:_userId],@"user_id",
+                           [NSNumber numberWithInt:2],@"edittype",
+                           self.easyNameField.text,@"easyname",
+                           _info.per_name,@"consignee",
+                           _info.per_tel,@"mobile",
+                           _info.per_detailAddress,@"address",
+                           _info.per_province,@"province",
+                           _info.per_city,@"city",
+                           _info.per_area,@"area",
+                           _info.per_post,@"zip_code",
+                           [NSNumber numberWithInt:_payInt],@"payway",
+                           money,@"payment",
+                           [NSNumber numberWithInt:_sendId],@"post_id",
+                           [NSNumber numberWithInt:time],@"send_time",
+                           [NSNumber numberWithInt:isSure],@"issure",
+                           [NSNumber numberWithInt:1],@"invoice_type",
+                           [NSNumber numberWithInt:titleValue],@"invoice_title_type",
+                           self.info.invoice_titleName,@"invoice_title_cont",
+                           [NSNumber numberWithInt:[self.easyId intValue]],@"easy_id",nil];
+        }
+    }
+    
+    [[DataManager sharedManager] accessService:jsontestDic command:ADDOREDIT_EASYBOOK_COMMAND_ID accessAdress:@"book/addorUpdateeasy.do?param=%@" delegate:self withParam:jsontestDic];
+}
+
+- (void)didFinishCommand:(NSMutableArray*)resultArray cmd:(int)commandid withVersion:(int)ver{
+	NSLog(@"information finish");
+    [self performSelectorOnMainThread:@selector(update:) withObject:resultArray waitUntilDone:NO];}
+
+- (void)update:(NSMutableArray *)resultArray
+{
+    //NSLog(@"resultArray===%@",resultArray);
+    if (progressHUD != nil) {
+        if (progressHUD) {
+            [progressHUD hide:YES];
+            [progressHUD removeFromSuperViewOnHide];		
+        }
+    }
+    
+    if ([resultArray count] > 0) {
+        int ret = [[resultArray objectAtIndex:0] intValue];
+        
+        if (ret == 1) {
+            MBProgressHUD *mprogressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+            [self.view addSubview:mprogressHUD];
+            [self.view bringSubviewToFront:mprogressHUD];
+            mprogressHUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"提示icon-ok.png"]] autorelease];
+            mprogressHUD.mode = MBProgressHUDModeCustomView;
+            mprogressHUD.labelText = @"提交成功";
+            mprogressHUD.delegate = self;
+            [mprogressHUD show:YES];
+            [mprogressHUD hide:YES afterDelay:1.5];
+            [mprogressHUD release];
+        }else {
+            MBProgressHUD *mprogressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+            [self.view addSubview:mprogressHUD];
+            [self.view bringSubviewToFront:mprogressHUD];
+            mprogressHUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"提示icon-信息.png"]] autorelease];
+            mprogressHUD.mode = MBProgressHUDModeCustomView;
+            mprogressHUD.labelText = @"提交失败";
+            [mprogressHUD show:YES];
+            [mprogressHUD hide:YES afterDelay:1.5];
+            [mprogressHUD release];
+        }
+    }
+    
+}
+
+@end

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>zh_CN</string>
+	<key>CFBundleDisplayName</key>
+	<string></string>
+	<key>CFBundleExecutable</key>
+	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleIconFile</key>
+	<string>icon</string>
+	<key>CFBundleIdentifier</key>
+	<string>cn.yunlai.shopping</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>仟吉西饼</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>weixin</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>wx06aade63031e0298</string>
+				<string>ShopingTempleate</string>
+				<string>sinaweibosso.84604506</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSMainNibFile</key>
+	<string>MainWindow</string>
+	<key>RSA private key</key>
+	<string>MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAJtaoapYB48cUgzrudaHRPlWLWDABvqg7C8S6mTIz8VApaRF3Wy0RvD9zVk3DJkarQIOInot9Vrn8maIr1LZQHp50/Xgh05vtPMZYTsiAFxo8GfdOj6re59/6KUnBzp46scvNPLE3xd1xnkVgwWg56OBcouRDEV331E3xffeF29nAgMBAAECgYBuDxYrFPQ9+cVTLAjbJ7fAoMHDIiePlUPd0ZvGzNENIFB5AZntsgX0IwpAoxREvzZEF3lrb3W78kizRTBYFFttjn2TpeyCPSMheIvMpKm2W6CehaFW1qeariPd8lWSkXjDwQ37LBW4pzXuDH/0Ojlr/3dQGicg2W36znFe/crDAQJBAM3nfj9Id+VLQ7ZCPzqDJvrdsuyuHAgTnAcVVex78ZXMVvjrqtDHxjhicaDizwOFggVGLmAFRNP/t0Jj7PKd0oECQQDBJqz5G19XAt2zB+4GAvIZYZ0oQnJEwQmWkylZCbutu4UEQAFv66TeL7Onj/AolL2eq+DhY+0tynt1mvWMJf3nAkAw9wkVwYUJmSFsGUrx/jhp1gjzsd/mp8smABPj3gGwbtyL63c+mRNxWy/MY8N5AenOmUbz/KzGgXwyJJM3iwKBAkBMPEKrc9VWl4f/oNKexszdnbyU5l0JrBNnvh/kx8Wu1cOzoLuwfBavp65GJbbJnaOWHAr/ixxTJYdDLO1b6qbjAkEAiQ57KVHCfEWk1tpRDvV9kEUkIjkn7C3JSM9+JKmODi/NfjLNie6633LgoMuG8P+S2B93E0S+fEos2L64l/llKg==</string>
+	<key>RSA public key</key>
+	<string>MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCraRLtwzf5KrhfgbbjC0qcJC/l45YgCtXVpXh527QOjuAQK0C21hXfAqgFCkFQT+9ZqEYgaonTfDw8UCSDDhqTJbPn/+q2HhjknX4fDHV5jp7/ky7/B/hIJWuzDd0btNuQ3nE5ctqTBEcvF75jF2IYX/BjqlhyY1eVr9VVCx6RoQIDAQAB</string>
+	<key>UIStatusBarHidden</key>
+	<true/>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+</dict>
+</plist>

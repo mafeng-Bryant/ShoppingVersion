@@ -1,0 +1,63 @@
+//
+//  BaiduMapViewController.h
+//  information
+//
+//  Created by 来 云 on 12-10-23.
+//  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "BMapKit.h"
+//#import "BMKSearch.h"
+#import "PopoverView.h"
+#import "CommandOperation.h"
+
+@interface BaiduMapViewController : UIViewController <BMKMapViewDelegate,PopoverViewDelegate,UITableViewDelegate,UITableViewDataSource,CommandOperationDelegate,UIActionSheetDelegate>
+{
+    BMKMapView *_mapView;
+//    BMKSearch *_search;
+    
+    double _latitude;
+    double _longitude;
+    
+    BMKAnnotationView *annotationForRemove;
+    BOOL _isEdit;
+    
+    //操作类型，分别为显示商铺，搜索地址，和用户自定义
+    enum operateType{
+        show_shops = 5,
+        search_place,
+        user_locate,
+        show_custom_shops
+    };
+    int operation;
+    NSArray *shopsArray;
+    NSString *phoneNum;
+    
+    PopoverView * popverView;
+    int selectIndex;
+    NSArray *myShopArray;
+    int myShopIndex;
+    
+    UIActivityIndicatorView *spinner;
+    double preDistanceFromMyLocation;
+    CLLocationCoordinate2D spanCoordate;
+}
+@property (retain, nonatomic) BMKMapView *mapView;
+//@property (retain, nonatomic) BMKSearch *search;
+@property (retain, nonatomic) NSString *phoneNum;
+@property (retain, nonatomic) NSArray *shopsArray;
+@property (retain, nonatomic) PopoverView * popverView;
+@property (nonatomic, retain) BMKAnnotationView *annotationForRemove;
+@property (nonatomic, retain) NSArray *myShopArray;
+@property (nonatomic, assign) BOOL isEdit;
+@property (nonatomic, assign) int operation;
+@property (nonatomic, retain) UIActivityIndicatorView *spinner;
+
+@property (nonatomic) double latitude;
+@property (nonatomic) double longitude;
+@property (nonatomic) int selectIndex;
+
+- (void)handleToMyLocation:(id)sender;
+@end
+

@@ -1,0 +1,215 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/HH_Iphone/!svn/ver/6578/shoppingTempleate/develop/Classes/uiviews/product
+END
+productTableViewController.m
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/HH_Iphone/!svn/ver/5770/shoppingTempleate/develop/Classes/uiviews/product/productTableViewController.m
+END
+myUISCrollView.h
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/HH_Iphone/!svn/ver/2600/shoppingTempleate/develop/Classes/uiviews/product/myUISCrollView.h
+END
+SubmitOrderViewController.h
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/HH_Iphone/!svn/ver/2992/shoppingTempleate/develop/Classes/uiviews/product/SubmitOrderViewController.h
+END
+myUISCrollView.m
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/HH_Iphone/!svn/ver/2600/shoppingTempleate/develop/Classes/uiviews/product/myUISCrollView.m
+END
+SubmitOrderViewController.m
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/HH_Iphone/!svn/ver/5800/shoppingTempleate/develop/Classes/uiviews/product/SubmitOrderViewController.m
+END
+productViewController.h
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/HH_Iphone/!svn/ver/3014/shoppingTempleate/develop/Classes/uiviews/product/productViewController.h
+END
+Product.h
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/HH_Iphone/!svn/ver/2787/shoppingTempleate/develop/Classes/uiviews/product/Product.h
+END
+subCatProductViewController.h
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/HH_Iphone/!svn/ver/2651/shoppingTempleate/develop/Classes/uiviews/product/subCatProductViewController.h
+END
+PayOrderViewController.h
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/HH_Iphone/!svn/ver/2786/shoppingTempleate/develop/Classes/uiviews/product/PayOrderViewController.h
+END
+productViewController.m
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/HH_Iphone/!svn/ver/5770/shoppingTempleate/develop/Classes/uiviews/product/productViewController.m
+END
+Product.m
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/HH_Iphone/!svn/ver/2787/shoppingTempleate/develop/Classes/uiviews/product/Product.m
+END
+subCatProductViewController.m
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/HH_Iphone/!svn/ver/2860/shoppingTempleate/develop/Classes/uiviews/product/subCatProductViewController.m
+END
+productTableCellViewController.h
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/HH_Iphone/!svn/ver/2298/shoppingTempleate/develop/Classes/uiviews/product/productTableCellViewController.h
+END
+myZoomImageView.h
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/HH_Iphone/!svn/ver/2600/shoppingTempleate/develop/Classes/uiviews/product/myZoomImageView.h
+END
+PayOrderViewController.m
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/HH_Iphone/!svn/ver/5800/shoppingTempleate/develop/Classes/uiviews/product/PayOrderViewController.m
+END
+productTableCellViewController.m
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/HH_Iphone/!svn/ver/2457/shoppingTempleate/develop/Classes/uiviews/product/productTableCellViewController.m
+END
+myZoomImageView.m
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/HH_Iphone/!svn/ver/2600/shoppingTempleate/develop/Classes/uiviews/product/myZoomImageView.m
+END
+myScrollView.h
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/HH_Iphone/!svn/ver/2600/shoppingTempleate/develop/Classes/uiviews/product/myScrollView.h
+END
+ProductDetailViewController.h
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/HH_Iphone/!svn/ver/2852/shoppingTempleate/develop/Classes/uiviews/product/ProductDetailViewController.h
+END
+myScrollView.m
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/HH_Iphone/!svn/ver/2600/shoppingTempleate/develop/Classes/uiviews/product/myScrollView.m
+END
+ShopCateViewController.h
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/HH_Iphone/!svn/ver/2957/shoppingTempleate/develop/Classes/uiviews/product/ShopCateViewController.h
+END
+ProductDetailViewController.m
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/HH_Iphone/!svn/ver/6578/shoppingTempleate/develop/Classes/uiviews/product/ProductDetailViewController.m
+END
+spinnerView.h
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/HH_Iphone/!svn/ver/2600/shoppingTempleate/develop/Classes/uiviews/product/spinnerView.h
+END
+ShopCateViewController.m
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/HH_Iphone/!svn/ver/5800/shoppingTempleate/develop/Classes/uiviews/product/ShopCateViewController.m
+END
+OriginPicViewController.xib
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/HH_Iphone/!svn/ver/2600/shoppingTempleate/develop/Classes/uiviews/product/OriginPicViewController.xib
+END
+spinnerView.m
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/HH_Iphone/!svn/ver/2600/shoppingTempleate/develop/Classes/uiviews/product/spinnerView.m
+END
+myWaterFlowViewController.h
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/HH_Iphone/!svn/ver/2651/shoppingTempleate/develop/Classes/uiviews/product/myWaterFlowViewController.h
+END
+ShopSubCateViewController.h
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/HH_Iphone/!svn/ver/2876/shoppingTempleate/develop/Classes/uiviews/product/ShopSubCateViewController.h
+END
+PayOrderByAlipay.h
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/HH_Iphone/!svn/ver/2981/shoppingTempleate/develop/Classes/uiviews/product/PayOrderByAlipay.h
+END
+OriginPicViewController.h
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/HH_Iphone/!svn/ver/2600/shoppingTempleate/develop/Classes/uiviews/product/OriginPicViewController.h
+END
+ShopSubCateViewController.m
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/HH_Iphone/!svn/ver/3543/shoppingTempleate/develop/Classes/uiviews/product/ShopSubCateViewController.m
+END
+myWaterFlowViewController.m
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/HH_Iphone/!svn/ver/5770/shoppingTempleate/develop/Classes/uiviews/product/myWaterFlowViewController.m
+END
+PayOrderByAlipay.m
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/HH_Iphone/!svn/ver/3551/shoppingTempleate/develop/Classes/uiviews/product/PayOrderByAlipay.m
+END
+productTableViewController.h
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/HH_Iphone/!svn/ver/2651/shoppingTempleate/develop/Classes/uiviews/product/productTableViewController.h
+END
+OriginPicViewController.m
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/HH_Iphone/!svn/ver/3351/shoppingTempleate/develop/Classes/uiviews/product/OriginPicViewController.m
+END

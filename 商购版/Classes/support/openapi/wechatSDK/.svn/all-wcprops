@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/HH_Iphone/!svn/ver/4540/shoppingTempleate/develop/Classes/support/openapi/wechatSDK
+END
+libWeChatSDK.a
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/HH_Iphone/!svn/ver/4540/shoppingTempleate/develop/Classes/support/openapi/wechatSDK/libWeChatSDK.a
+END
+SendMsgToWeChat.h
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/HH_Iphone/!svn/ver/2587/shoppingTempleate/develop/Classes/support/openapi/wechatSDK/SendMsgToWeChat.h
+END
+WXApiObject.h
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/HH_Iphone/!svn/ver/4540/shoppingTempleate/develop/Classes/support/openapi/wechatSDK/WXApiObject.h
+END
+SendMsgToWeChat.m
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/HH_Iphone/!svn/ver/2587/shoppingTempleate/develop/Classes/support/openapi/wechatSDK/SendMsgToWeChat.m
+END
+WXApi.h
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/HH_Iphone/!svn/ver/4540/shoppingTempleate/develop/Classes/support/openapi/wechatSDK/WXApi.h
+END

@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/HH_Iphone/!svn/ver/3320/shoppingTempleate/develop/Classes/uiviews/product/promotionAlerts
+END
+PromotionAlertView.h
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/HH_Iphone/!svn/ver/2804/shoppingTempleate/develop/Classes/uiviews/product/promotionAlerts/PromotionAlertView.h
+END
+ShareAlertViewController.h
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/HH_Iphone/!svn/ver/2789/shoppingTempleate/develop/Classes/uiviews/product/promotionAlerts/ShareAlertViewController.h
+END
+PromotionAlertView.m
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/HH_Iphone/!svn/ver/3016/shoppingTempleate/develop/Classes/uiviews/product/promotionAlerts/PromotionAlertView.m
+END
+ShareAlertViewController.m
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/HH_Iphone/!svn/ver/3157/shoppingTempleate/develop/Classes/uiviews/product/promotionAlerts/ShareAlertViewController.m
+END
+ShareSuccessAlertView.h
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/HH_Iphone/!svn/ver/2802/shoppingTempleate/develop/Classes/uiviews/product/promotionAlerts/ShareSuccessAlertView.h
+END
+GetPromotionCodeFailAlertView.h
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/HH_Iphone/!svn/ver/2789/shoppingTempleate/develop/Classes/uiviews/product/promotionAlerts/GetPromotionCodeFailAlertView.h
+END
+GetPromotionSuccessAlertView.h
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/HH_Iphone/!svn/ver/2789/shoppingTempleate/develop/Classes/uiviews/product/promotionAlerts/GetPromotionSuccessAlertView.h
+END
+ShareSuccessAlertView.m
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/HH_Iphone/!svn/ver/2802/shoppingTempleate/develop/Classes/uiviews/product/promotionAlerts/ShareSuccessAlertView.m
+END
+GetPromotionCodeFailAlertView.m
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/HH_Iphone/!svn/ver/2789/shoppingTempleate/develop/Classes/uiviews/product/promotionAlerts/GetPromotionCodeFailAlertView.m
+END
+GetPromotionSuccessAlertView.m
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/HH_Iphone/!svn/ver/3320/shoppingTempleate/develop/Classes/uiviews/product/promotionAlerts/GetPromotionSuccessAlertView.m
+END

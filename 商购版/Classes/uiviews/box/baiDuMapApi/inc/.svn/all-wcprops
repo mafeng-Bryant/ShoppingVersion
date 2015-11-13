@@ -1,0 +1,179 @@
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/HH_Iphone/!svn/ver/3398/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc
+END
+BMKShape.h
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKShape.h
+END
+BMKCircle.h
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKCircle.h
+END
+BMKMultiPoint.h
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKMultiPoint.h
+END
+BMKTypes.h
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKTypes.h
+END
+BMKAnnotationView.h
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKAnnotationView.h
+END
+BMKSearch.h
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKSearch.h
+END
+BMKGeocodeType.h
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKGeocodeType.h
+END
+BMKUserLocation.h
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKUserLocation.h
+END
+BMKMapView.h
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKMapView.h
+END
+BMKMapManager.h
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKMapManager.h
+END
+BMKGeneralDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKGeneralDelegate.h
+END
+BMKAnnotation.h
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKAnnotation.h
+END
+BMKPinAnnotationView.h
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKPinAnnotationView.h
+END
+BMKOverlayView.h
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKOverlayView.h
+END
+BMKPoiSearchType.h
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKPoiSearchType.h
+END
+BMKOfflineMap.h
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKOfflineMap.h
+END
+BMKOverlay.h
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKOverlay.h
+END
+BMKOfflineMapType.h
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKOfflineMapType.h
+END
+BMKPolygonView.h
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKPolygonView.h
+END
+BMKPointAnnotation.h
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKPointAnnotation.h
+END
+BMKVersion.h
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/HH_Iphone/!svn/ver/3398/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKVersion.h
+END
+BMKPolylineView.h
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKPolylineView.h
+END
+BMKRouteSearchType.h
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKRouteSearchType.h
+END
+BMKPolygon.h
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKPolygon.h
+END
+BMKOverlayPathView.h
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKOverlayPathView.h
+END
+BMKGeometry.h
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKGeometry.h
+END
+BMKPolyline.h
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKPolyline.h
+END
+BMKCircleView.h
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMKCircleView.h
+END
+BMapKit.h
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/HH_Iphone/!svn/ver/2765/shoppingTempleate/develop/Classes/uiviews/box/baiDuMapApi/inc/BMapKit.h
+END
